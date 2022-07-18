@@ -18,6 +18,7 @@ class FoodCategoryListAPIView(generics.ListAPIView):
             .filter(food_published_count__gte=0)
 
             # Фильтруем опубликованную еду (если еда не опубликована - не выводим)
+            # Результат заносим в food_filtered для вывода через FoodListSerializer
             .prefetch_related(
                 Prefetch(
                     "food",

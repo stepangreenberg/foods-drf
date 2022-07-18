@@ -10,16 +10,21 @@ class FoodCategoryListAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         food_category_queryset = (
-            FoodCategory.objects.prefetch_related(
+            FoodCategory.objects
+
+            # Фильтруем категории (если нет опубликованной еды - не выводим категорию)
+            .filter(food__is_publish=True)
+            .annotate(food_published_count=Count("food"))
+            .filter(food_published_count__gte=0)
+
+            # Фильтруем опубликованную еду (если еда не опубликована - не выводим)
+            .prefetch_related(
                 Prefetch(
                     "food",
                     queryset=Food.objects.filter(is_publish=True),
-                    to_attr="filtered_food",
+                    to_attr="food_filtered",
                 )
             )
-            .filter(food__is_publish=True)
-            .annotate(publish_count=Count("food"))
-            .filter(publish_count__gte=0)
         )
 
         return food_category_queryset

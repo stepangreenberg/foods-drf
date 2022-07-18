@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 3rd party
     "rest_framework",
-    "django_filters",
     # Local
     'foods.apps.FoodsConfig',
 ]

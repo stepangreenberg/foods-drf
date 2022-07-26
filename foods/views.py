@@ -13,7 +13,7 @@ class FoodCategoryListAPIView(generics.ListAPIView):
         # Фильтруем категории (если нет опубликованной еды - не выводим категорию)
         .filter(food__is_publish=True)
         .annotate(food_published_count=Count("food"))
-        .filter(food_published_count__gte=0)
+        .filter(food_published_count__gt=0)
 
         # Фильтруем опубликованную еду (если еда не опубликована - не выводим)
         # Результат заносим в food_filtered для вывода через FoodListSerializer
